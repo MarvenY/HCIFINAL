@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    PostCardView.xaml
+    A reusable card that shows a post in the feed.
+    Bindable properties: Post, ToggleLikeCommand, OpenPostCommand
+-->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Controls.PostCardView"
+             x:Name="Root">
+
+    <Frame Style="{StaticResource PostCard}" Margin="12,6">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer
+                Command="{Binding Source={x:Reference Root}, Path=OpenPostCommand}"
+                CommandParameter="{Binding Source={x:Reference Root}, Path=Post}" />
+        </Frame.GestureRecognizers>
+
+        <VerticalStackLayout Spacing="0">
+
+            <!-- ── Author Header ────────────────────────────────── -->
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Padding="12,10"
+                  ColumnSpacing="10">
+
+                <!-- Avatar -->
+                <Frame Grid.Column="0"
+                       CornerRadius="20"
+                       HeightRequest="40" WidthRequest="40"
+                       Padding="0"
+                       IsClippedToBounds="True"
+                       HasShadow="False"
+                       BorderColor="Transparent">
+                    <Image Source="{Binding Source={x:Reference Root}, Path=Post.AuthorAvatarUrl, TargetNullValue='https://i.pravatar.cc/80'}"
+                           Aspect="AspectFill" />
+                </Frame>
+
+                <!-- Name -->
+                <Label Grid.Column="1"
+                       Text="{Binding Source={x:Reference Root}, Path=Post.AuthorName}"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       VerticalOptions="Center"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1" />
+
+                <!-- More (⋮) button -->
+                <ImageButton Grid.Column="2"
+                             Source="icon_more.png"
+                             HeightRequest="24" WidthRequest="24"
+                             BackgroundColor="Transparent"
+                             VerticalOptions="Center" />
+            </Grid>
+
+            <!-- ── Post Image ──────────────────────────────────── -->
+            <Image Source="{Binding Source={x:Reference Root}, Path=Post.ImageUrl}"
+                   Aspect="AspectFill"
+                   HeightRequest="200"
+                   IsVisible="{Binding Source={x:Reference Root}, Path=Post.ImageUrl, Converter={x:StaticResource StringToBoolConverter}}" />
+
+            <!-- ── Title ──────────────────────────────────────── -->
+            <Label Text="{Binding Source={x:Reference Root}, Path=Post.Title}"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   Margin="12,10,12,4"
+                   LineBreakMode="WordWrap" />
+
+            <!-- ── Calorie & Time chips ───────────────────────── -->
+            <HorizontalStackLayout Margin="12,2,12,8" Spacing="8">
+                <!-- Calories -->
+                <Frame CornerRadius="12"
+                       Padding="8,4"
+                       BackgroundColor="#FF9800"
+                       HasShadow="False">
+                    <Label Text="{Binding Source={x:Reference Root}, Path=Post.Calories, StringFormat='🔥 {0} cal'}"
+                           TextColor="White"
+                           FontSize="12" />
+                </Frame>
+                <!-- Cooking time -->
+                <Frame CornerRadius="12"
+                       Padding="8,4"
+                       BackgroundColor="#00BCD4"
+                       HasShadow="False"
+                       IsVisible="{Binding Source={x:Reference Root}, Path=Post.CookingTime, Converter={x:StaticResource StringToBoolConverter}}">
+                    <Label Text="{Binding Source={x:Reference Root}, Path=Post.CookingTime, StringFormat='⏱️ {0}'}"
+                           TextColor="White"
+                           FontSize="12" />
+                </Frame>
+            </HorizontalStackLayout>
+
+            <!-- ── Action Row: Like, Comment ─────────────────── -->
+            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,0,0,0" />
+            <Grid ColumnDefinitions="*,*"
+                  Padding="0"
+                  HeightRequest="44">
+
+                <!-- Like button -->
+                <Button Grid.Column="0"
+                        Command="{Binding Source={x:Reference Root}, Path=ToggleLikeCommand}"
+                        CommandParameter="{Binding Source={x:Reference Root}, Path=Post}"
+                        BackgroundColor="Transparent"
+                        FontSize="14"
+                        TextColor="{StaticResource PrimaryGreen}"
+                        Text="{Binding Source={x:Reference Root}, Path=Post.LikeCount, StringFormat='👍 {0}'}" />
+
+                <!-- Comment button -->
+                <Button Grid.Column="1"
+                        Command="{Binding Source={x:Reference Root}, Path=OpenPostCommand}"
+                        CommandParameter="{Binding Source={x:Reference Root}, Path=Post}"
+                        BackgroundColor="Transparent"
+                        FontSize="14"
+                        TextColor="{StaticResource PrimaryGreen}"
+                        Text="{Binding Source={x:Reference Root}, Path=Post.CommentCount, StringFormat='💬 Comment ({0})'}" />
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </Frame>
+
+</ContentView>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Views.ProfilePage"
+             Title="Profile">
+
+    <ContentPage.BindingContext>
+        <vm:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="⚙️"
+                     Command="{Binding GoToEditProfileCommand}"
+                     IsVisible="{Binding IsCurrentUser}"
+                     Order="Primary" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView Command="{Binding LoadProfileCommand}"
+                 IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+
+                <!-- ── Profile Header ────────────────────────── -->
+                <VerticalStackLayout BackgroundColor="{StaticResource PrimaryGreen}"
+                                     Padding="20,24,20,32"
+                                     Spacing="12"
+                                     HorizontalOptions="Fill">
+
+                    <!-- Avatar -->
+                    <Frame CornerRadius="50"
+                           HeightRequest="100" WidthRequest="100"
+                           Padding="0"
+                           IsClippedToBounds="True"
+                           HasShadow="True"
+                           BorderColor="White"
+                           HorizontalOptions="Center">
+                        <Image Source="{Binding Profile.ProfileIconUrl,
+                                               TargetNullValue='https://i.pravatar.cc/150'}"
+                               Aspect="AspectFill" />
+                    </Frame>
+
+                    <!-- Username -->
+                    <Label Text="{Binding Profile.Username}"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
+
+                    <!-- Stats row -->
+                    <Grid ColumnDefinitions="*,*,*" Margin="0,8,0,0">
+                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="2">
+                            <Label Text="{Binding Profile.PostCount}"
+                                   FontAttributes="Bold" FontSize="22" TextColor="White"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Posts" FontSize="13" TextColor="#C8E6C9"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
+                            <Label Text="{Binding Profile.FollowersCount}"
+                                   FontAttributes="Bold" FontSize="22" TextColor="White"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Followers" FontSize="13" TextColor="#C8E6C9"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="2">
+                            <Label Text="{Binding Profile.FollowingCount}"
+                                   FontAttributes="Bold" FontSize="22" TextColor="White"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Following" FontSize="13" TextColor="#C8E6C9"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Edit / Follow button -->
+                    <Button Text="Edit Profile"
+                            Command="{Binding GoToEditProfileCommand}"
+                            IsVisible="{Binding IsCurrentUser}"
+                            BackgroundColor="White"
+                            TextColor="{StaticResource PrimaryGreen}"
+                            CornerRadius="20"
+                            HeightRequest="40"
+                            Padding="24,0"
+                            HorizontalOptions="Center"
+                            FontAttributes="Bold" />
+
+                    <Button Text="{Binding IsFollowing, Converter={x:StaticResource BoolToStringConverter},
+                                          ConverterParameter='Following|Follow'}"
+                            Command="{Binding ToggleFollowCommand}"
+                            IsVisible="{Binding IsCurrentUser, Converter={x:StaticResource InvertBoolConverter}}"
+                            BackgroundColor="White"
+                            TextColor="{StaticResource PrimaryGreen}"
+                            CornerRadius="20"
+                            HeightRequest="40"
+                            Padding="24,0"
+                            HorizontalOptions="Center"
+                            FontAttributes="Bold" />
+                </VerticalStackLayout>
+
+                <!-- ── Posts Grid ─────────────────────────────── -->
+                <Label Text="Posts" FontAttributes="Bold" FontSize="17" Margin="14,14,14,8" />
+
+                <CollectionView ItemsSource="{Binding UserPosts}"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="3"
+                                         VerticalItemSpacing="3"
+                                         HorizontalItemSpacing="3" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyView>
+                        <Label Text="No posts yet." TextColor="Gray"
+                               HorizontalOptions="Center" Margin="0,20" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Post">
+                            <Image Source="{Binding ImageUrl}"
+                                   Aspect="AspectFill"
+                                   HeightRequest="120">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProfileViewModel}}, Path=OpenPostCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView HeightRequest="40" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+
+</ContentPage>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:Le2me.Converters"
+             x:Class="Le2me.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- ── Converters (available app-wide) ──────────────────── -->
+            <conv:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <conv:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <conv:BoolToStringConverter x:Key="BoolToStringConverter" />
+            <!-- ── Brand Colors ─────────────────────────────────── -->
+            <Color x:Key="PrimaryGreen">#51CE5C</Color>
+            <Color x:Key="DarkGreen">#2E7D32</Color>
+            <Color x:Key="CardLight">#B7E4C7</Color>
+            <Color x:Key="CardDark">#424242</Color>
+            <Color x:Key="BackgroundLight">#FFFFFF</Color>
+            <Color x:Key="BackgroundDark">#121212</Color>
+            <Color x:Key="TextDark">#212121</Color>
+            <Color x:Key="TextLight">#FAFAFA</Color>
+            <Color x:Key="AccentOrange">#FF9800</Color>
+            <Color x:Key="AccentCyan">#00BCD4</Color>
+
+            <!-- ── Button Styles ─────────────────────────────────── -->
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryGreen}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HeightRequest" Value="50" />
+            </Style>
+
+            <Style x:Key="DangerButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Red" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HeightRequest" Value="50" />
+            </Style>
+
+            <!-- ── Entry/TextField Style ─────────────────────────── -->
+            <Style x:Key="FormEntry" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HeightRequest" Value="50" />
+            </Style>
+
+            <!-- ── Card Frame ────────────────────────────────────── -->
+            <Style x:Key="PostCard" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource CardLight}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="12,6" />
+                <Setter Property="HasShadow" Value="True" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

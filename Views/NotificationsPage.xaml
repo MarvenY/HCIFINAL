@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Views.NotificationsPage"
+             Title="Notifications">
+
+    <ContentPage.BindingContext>
+        <vm:NotificationsViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clear All"
+                     Command="{Binding ClearAllCommand}"
+                     Order="Secondary" />
+    </ContentPage.ToolbarItems>
+
+    <CollectionView ItemsSource="{Binding Notifications}"
+                    SelectionMode="None">
+
+        <CollectionView.EmptyView>
+            <VerticalStackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="12"
+                                 Margin="0,100,0,0">
+                <Label Text="🔔" FontSize="60" HorizontalOptions="Center" />
+                <Label Text="No notifications yet."
+                       TextColor="Gray"
+                       FontSize="16"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </CollectionView.EmptyView>
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:AppNotification">
+                <SwipeView>
+                    <!-- Swipe-left to dismiss -->
+                    <SwipeView.RightItems>
+                        <SwipeItems>
+                            <SwipeItem Text="Dismiss"
+                                       BackgroundColor="Red"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificationsViewModel}}, Path=DismissNotificationCommand}"
+                                       CommandParameter="{Binding .}" />
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <Frame Margin="12,6"
+                           CornerRadius="12"
+                           Padding="14,12"
+                           BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#2A2A2A}"
+                           HasShadow="True">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Label Grid.Column="0"
+                                   Text="🔔"
+                                   FontSize="24"
+                                   VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="15" />
+                                <Label Text="{Binding Body}"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </SwipeView>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+    </CollectionView>
+
+</ContentPage>

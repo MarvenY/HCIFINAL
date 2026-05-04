@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Le2me.Views.SplashPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource PrimaryGreen}">
+
+    <Grid RowDefinitions="*,Auto,*">
+
+        <!-- Centered logo + app name -->
+        <VerticalStackLayout Grid.Row="1"
+                             HorizontalOptions="Center"
+                             Spacing="20">
+
+            <!-- App logo circle -->
+            <Frame CornerRadius="60"
+                   HeightRequest="120" WidthRequest="120"
+                   BackgroundColor="White"
+                   Padding="0"
+                   HorizontalOptions="Center"
+                   HasShadow="True">
+                <Label Text="🍽️"
+                       FontSize="60"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Frame>
+
+            <Label Text="Le2me"
+                   FontSize="48"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Your all-in-one food app"
+                   FontSize="16"
+                   TextColor="#E8F5E9"
+                   HorizontalOptions="Center" />
+
+            <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,0" />
+        </VerticalStackLayout>
+
+        <!-- Version label at bottom -->
+        <Label Grid.Row="2"
+               Text="v0.8.2"
+               TextColor="#A5D6A7"
+               FontSize="12"
+               HorizontalOptions="Center"
+               VerticalOptions="End"
+               Margin="0,0,0,24" />
+    </Grid>
+
+</ContentPage>

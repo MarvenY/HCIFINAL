@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             xmlns:controls="clr-namespace:Le2me.Controls"
+             x:Class="Le2me.Views.HomePage"
+             Title="Home">
+
+    <ContentPage.BindingContext>
+        <vm:HomeViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- ── Toolbar: Notifications + Logo ─────────────────────────── -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="🔔"
+                     Command="{Binding GoToNotificationsCommand}"
+                     Order="Primary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsRefreshing}">
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+
+                <!-- ── Flash Card Carousel ────────────────────────── -->
+                <Frame Margin="12,12,12,6"
+                       CornerRadius="16"
+                       BackgroundColor="{StaticResource PrimaryGreen}"
+                       Padding="0"
+                       HasShadow="True"
+                       HeightRequest="200">
+                    <CarouselView x:Name="FlashCarousel"
+                                  Loop="True"
+                                  HeightRequest="200">
+                        <CarouselView.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>welcome</x:String>
+                                <x:String>explore</x:String>
+                                <x:String>chat</x:String>
+                            </x:Array>
+                        </CarouselView.ItemsSource>
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:FlashCard CardType="{Binding .}" />
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+                </Frame>
+
+                <!-- ── Post Feed ──────────────────────────────────── -->
+                <CollectionView ItemsSource="{Binding Posts}"
+                                SelectionMode="None"
+                                RemainingItemsThreshold="3"
+                                RemainingItemsThresholdReachedCommand="{Binding LoadPostsCommand}">
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             Margin="0,60,0,0"
+                                             Spacing="12">
+                            <Label Text="🍽️" FontSize="56" HorizontalOptions="Center" />
+                            <Label Text="No posts yet. Be the first to share a recipe!"
+                                   FontSize="15"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Margin="24,0" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Post">
+                            <controls:PostCardView Post="{Binding .}"
+                                                   ToggleLikeCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ToggleLikeCommand}"
+                                                   OpenPostCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=OpenPostCommand}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <!-- Bottom padding so last card isn't hidden by tab bar -->
+                <BoxView HeightRequest="80" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </RefreshView>
+
+</ContentPage>

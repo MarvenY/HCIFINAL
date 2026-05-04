@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Views.PostDetailPage"
+             Title="Post Details">
+
+    <ContentPage.BindingContext>
+        <vm:PostDetailViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Toolbar actions -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="🔗"
+                     Command="{Binding SharePostCommand}"
+                     Order="Primary" />
+        <ToolbarItem Text="⋮"
+                     Order="Secondary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- ── Scrollable content ────────────────────────────── -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="0">
+
+                <!-- Author row -->
+                <Grid ColumnDefinitions="Auto,*,Auto"
+                      Padding="14,12"
+                      ColumnSpacing="10">
+
+                    <Frame Grid.Column="0"
+                           CornerRadius="24"
+                           HeightRequest="48" WidthRequest="48"
+                           Padding="0"
+                           IsClippedToBounds="True"
+                           HasShadow="False"
+                           BorderColor="Transparent">
+                        <Image Source="{Binding CurrentPost.AuthorAvatarUrl,
+                                               TargetNullValue='https://i.pravatar.cc/80'}"
+                               Aspect="AspectFill" />
+                    </Frame>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding CurrentPost.AuthorName}"
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               LineBreakMode="TailTruncation"
+                               MaxLines="1" />
+                        <Label Text="{Binding CurrentPost.TimestampDisplay}"
+                               FontSize="12"
+                               TextColor="Gray" />
+                    </VerticalStackLayout>
+
+                    <!-- Follow button -->
+                    <Button Grid.Column="2"
+                            Text="Follow"
+                            BackgroundColor="{StaticResource PrimaryGreen}"
+                            TextColor="White"
+                            CornerRadius="16"
+                            HeightRequest="36"
+                            Padding="12,0"
+                            FontSize="13" />
+                </Grid>
+
+                <!-- Hero image -->
+                <Image Source="{Binding CurrentPost.ImageUrl}"
+                       Aspect="AspectFill"
+                       HeightRequest="260"
+                       IsVisible="{Binding CurrentPost.ImageUrl, Converter={x:StaticResource StringToBoolConverter}}" />
+
+                <!-- Title -->
+                <Label Text="{Binding CurrentPost.Title}"
+                       FontAttributes="Bold"
+                       FontSize="22"
+                       Margin="14,14,14,4"
+                       LineBreakMode="WordWrap" />
+
+                <!-- Calorie + time chips -->
+                <HorizontalStackLayout Margin="14,4,14,0" Spacing="10">
+                    <Frame CornerRadius="16" Padding="10,5" BackgroundColor="#FF9800" HasShadow="False">
+                        <Label Text="{Binding CurrentPost.Calories, StringFormat='🔥 {0} cal'}"
+                               TextColor="White" FontSize="13" />
+                    </Frame>
+                    <Frame CornerRadius="16" Padding="10,5" BackgroundColor="#00BCD4" HasShadow="False"
+                           IsVisible="{Binding CurrentPost.CookingTime, Converter={x:StaticResource StringToBoolConverter}}">
+                        <Label Text="{Binding CurrentPost.CookingTime, StringFormat='⏱️ {0}'}"
+                               TextColor="White" FontSize="13" />
+                    </Frame>
+                </HorizontalStackLayout>
+
+                <!-- Body content -->
+                <Label Text="{Binding CurrentPost.Content}"
+                       FontSize="15"
+                       LineHeight="1.5"
+                       Margin="14,12"
+                       TextColor="{AppThemeBinding Light=#212121, Dark=#E0E0E0}" />
+
+                <!-- Action buttons row -->
+                <HorizontalStackLayout Margin="10,8" Spacing="8">
+
+                    <!-- Like -->
+                    <Button Command="{Binding ToggleLikeCommand}"
+                            BackgroundColor="{StaticResource PrimaryGreen}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="38"
+                            Padding="12,0"
+                            FontSize="14"
+                            Text="{Binding CurrentPost.LikeCount, StringFormat='👍 {0}'}" />
+
+                    <!-- Bookmark -->
+                    <Button Command="{Binding ToggleBookmarkCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#424242, Dark=#616161}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="38"
+                            Padding="12,0"
+                            FontSize="14"
+                            Text="{Binding IsBookmarked, Converter={x:StaticResource BoolToStringConverter},
+                                          ConverterParameter='🔖 Saved|🔖 Save'}" />
+
+                    <!-- Share -->
+                    <Button Command="{Binding SharePostCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#1565C0, Dark=#1E88E5}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="38"
+                            Padding="12,0"
+                            FontSize="14"
+                            Text="📤 Share" />
+
+                    <!-- Delete (visible only to owner) -->
+                    <Button Command="{Binding DeletePostCommand}"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="38"
+                            Padding="12,0"
+                            FontSize="14"
+                            Text="🗑️ Delete"
+                            IsVisible="False" />
+                </HorizontalStackLayout>
+
+                <!-- Divider -->
+                <BoxView HeightRequest="1" Color="#E0E0E0" Margin="14,8" />
+
+                <!-- Comments header -->
+                <Label Text="💬 Comments"
+                       FontAttributes="Bold"
+                       FontSize="17"
+                       Margin="14,4,14,8" />
+
+                <!-- Comments list -->
+                <CollectionView ItemsSource="{Binding Comments}"
+                                SelectionMode="None"
+                                Margin="8,0">
+                    <CollectionView.EmptyView>
+                        <Label Text="No comments yet. Be the first!"
+                               TextColor="Gray"
+                               HorizontalOptions="Center"
+                               Margin="0,12" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Comment">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  Padding="6,6"
+                                  ColumnSpacing="10">
+                                <!-- Avatar -->
+                                <Frame Grid.Column="0"
+                                       CornerRadius="16"
+                                       HeightRequest="32" WidthRequest="32"
+                                       Padding="0"
+                                       IsClippedToBounds="True"
+                                       HasShadow="False"
+                                       BorderColor="Transparent">
+                                    <Image Source="{Binding AuthorAvatarUrl, TargetNullValue='https://i.pravatar.cc/40'}"
+                                           Aspect="AspectFill" />
+                                </Frame>
+                                <!-- Comment bubble -->
+                                <Frame Grid.Column="1"
+                                       Padding="10,7"
+                                       CornerRadius="12"
+                                       BackgroundColor="{AppThemeBinding Light=#F0F0F0, Dark=#2A2A2A}"
+                                       HasShadow="False">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Text="{Binding AuthorName}"
+                                               FontAttributes="Bold"
+                                               FontSize="13" />
+                                        <Label Text="{Binding Text}"
+                                               FontSize="14"
+                                               LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding TimestampDisplay}"
+                                               FontSize="11"
+                                               TextColor="Gray" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView HeightRequest="100" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ── Comment Input Bar ─────────────────────────────── -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              Padding="12,8"
+              BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+              ColumnSpacing="8">
+
+            <Frame Grid.Column="0"
+                   Padding="12,0"
+                   CornerRadius="24"
+                   BorderColor="#E0E0E0"
+                   HasShadow="False">
+                <Entry Text="{Binding CommentText}"
+                       Placeholder="Add a comment…"
+                       ReturnCommand="{Binding SubmitCommentCommand}"
+                       FontSize="15" />
+            </Frame>
+
+            <Button Grid.Column="1"
+                    Command="{Binding SubmitCommentCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="{StaticResource PrimaryGreen}"
+                    TextColor="White"
+                    Text="➤"
+                    FontSize="18"
+                    CornerRadius="24"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

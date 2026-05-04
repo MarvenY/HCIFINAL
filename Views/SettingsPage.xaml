@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             x:Class="Le2me.Views.SettingsPage"
+             Title="Settings">
+
+    <ContentPage.BindingContext>
+        <vm:SettingsViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- ── Section: Appearance ────────────────────── -->
+            <Label Text="Appearance"
+                   FontSize="13"
+                   TextColor="Gray"
+                   Margin="16,16,16,4"
+                   FontAttributes="Bold" />
+
+            <Frame Margin="12,0,12,8" Padding="0" CornerRadius="12" HasShadow="False">
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="16,12" ColumnSpacing="14">
+                        <Label Grid.Column="0" Text="🌙" FontSize="22" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Dark Mode"
+                               FontSize="16" VerticalOptions="Center" />
+                        <Switch Grid.Column="2"
+                                IsToggled="{Binding IsDarkMode}"
+                                OnColor="{StaticResource PrimaryGreen}"
+                                ThumbColor="White" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ── Section: About ────────────────────────── -->
+            <Label Text="About"
+                   FontSize="13"
+                   TextColor="Gray"
+                   Margin="16,8,16,4"
+                   FontAttributes="Bold" />
+
+            <Frame Margin="12,0,12,8" Padding="0" CornerRadius="12" HasShadow="False">
+                <VerticalStackLayout>
+
+                    <!-- Rules & Policies -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="16,14" ColumnSpacing="14">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToAboutCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Label Grid.Column="0" Text="📋" FontSize="22" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Rules &amp; Policies"
+                               FontSize="16" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="›" FontSize="20" TextColor="Gray" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" Margin="16,0" />
+
+                    <!-- App Version -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="16,14" ColumnSpacing="14">
+                        <Label Grid.Column="0" Text="✅" FontSize="22" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="App Version"
+                               FontSize="16" VerticalOptions="Center" />
+                        <Label Grid.Column="2"
+                               Text="{Binding AppVersion}"
+                               FontSize="14"
+                               TextColor="Gray"
+                               VerticalOptions="Center" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ── Section: Account ──────────────────────── -->
+            <Label Text="Account"
+                   FontSize="13"
+                   TextColor="Gray"
+                   Margin="16,8,16,4"
+                   FontAttributes="Bold" />
+
+            <Frame Margin="12,0,12,8" Padding="0" CornerRadius="12" HasShadow="False">
+                <!-- Sign Out -->
+                <Grid ColumnDefinitions="Auto,*" Padding="16,14" ColumnSpacing="14">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignOutCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Label Grid.Column="0" Text="🚪" FontSize="22" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="Sign Out"
+                           FontSize="16" TextColor="Red"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <BoxView HeightRequest="40" Color="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

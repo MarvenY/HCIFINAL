@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Le2me.Views.AboutPage"
+             Title="Rules &amp; Policies">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16,16" Spacing="12">
+
+            <!-- ── Community Rules ─────────────────────────── -->
+            <Label Text="Community Rules"
+                   FontSize="20"
+                   FontAttributes="Bold" />
+
+            <Frame Padding="14,12" CornerRadius="10"
+                   BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#2A2A2A}"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="🍽️" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Only post meal- and kitchen-related content."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="👍" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Be kind: no hate speech, harassment, or bullying."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="🚫" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="No spam, self-promotion, or off-topic ads."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="⚠️" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Don't share unsafe or illegal cooking practices."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="©️" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Only upload recipes and images you own or have rights to."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ── Enforcement Policies ────────────────────── -->
+            <Label Text="Enforcement Policies"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   Margin="0,8,0,0" />
+
+            <Frame Padding="14,12" CornerRadius="10"
+                   BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#2A2A2A}"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="📢" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Violations will be reviewed and removed."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="🔒" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Repeat offenders may be suspended or banned."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="🛡️" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="We respect your privacy — personal data is never shared."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="✉️" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Questions? Email us at support@le2meapp.com"
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" />
+
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="🔄" FontSize="22" VerticalOptions="Center" />
+                        <Label Text="Policies last updated April 30, 2025."
+                               FontSize="15" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ── Footer note ─────────────────────────────── -->
+            <Label Text="Thank you for helping us keep our community safe, friendly, and focused on cooking! 🍳"
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalTextAlignment="Center"
+                   Margin="16,16,16,8"
+                   LineBreakMode="WordWrap" />
+
+            <BoxView HeightRequest="40" Color="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

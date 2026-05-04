@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    ProfileDrawer.xaml  – Flyout side menu for the Shell
+    Shown when the hamburger icon is tapped.
+-->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Le2me.Controls.ProfileDrawer"
+             Title="Menu">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- ── Drawer Header ──────────────────────────────── -->
+            <VerticalStackLayout BackgroundColor="{StaticResource PrimaryGreen}"
+                                 Padding="20,40,20,24"
+                                 Spacing="8">
+
+                <Frame CornerRadius="40"
+                       HeightRequest="80" WidthRequest="80"
+                       Padding="0"
+                       IsClippedToBounds="True"
+                       HasShadow="True"
+                       BorderColor="White"
+                       HorizontalOptions="Center">
+                    <Image Source="https://i.pravatar.cc/100"
+                           Aspect="AspectFill" />
+                </Frame>
+
+                <Label Text="My Profile"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- ── Nav items ───────────────────────────────────── -->
+            <!-- My Profile -->
+            <Grid x:Name="ProfileItem"
+                  ColumnDefinitions="Auto,*"
+                  Padding="20,16"
+                  ColumnSpacing="14">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnProfileTapped" />
+                </Grid.GestureRecognizers>
+                <Label Grid.Column="0" Text="👤" FontSize="22" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="My Profile"
+                       FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="20,0" />
+
+            <!-- Bookmarks -->
+            <Grid ColumnDefinitions="Auto,*"
+                  Padding="20,16"
+                  ColumnSpacing="14">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBookmarksTapped" />
+                </Grid.GestureRecognizers>
+                <Label Grid.Column="0" Text="🔖" FontSize="22" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="Bookmarks"
+                       FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="20,0" />
+
+            <!-- Settings -->
+            <Grid ColumnDefinitions="Auto,*"
+                  Padding="20,16"
+                  ColumnSpacing="14">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSettingsTapped" />
+                </Grid.GestureRecognizers>
+                <Label Grid.Column="0" Text="⚙️" FontSize="22" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="Settings"
+                       FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="20,0" />
+
+            <!-- About -->
+            <Grid ColumnDefinitions="Auto,*"
+                  Padding="20,16"
+                  ColumnSpacing="14">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAboutTapped" />
+                </Grid.GestureRecognizers>
+                <Label Grid.Column="0" Text="ℹ️" FontSize="22" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="About"
+                       FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="20,0" />
+
+            <!-- Sign Out -->
+            <Grid ColumnDefinitions="Auto,*"
+                  Padding="20,16"
+                  ColumnSpacing="14">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSignOutTapped" />
+                </Grid.GestureRecognizers>
+                <Label Grid.Column="0" Text="🚪" FontSize="22" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="Sign Out"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="Red"
+                       VerticalOptions="Center" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

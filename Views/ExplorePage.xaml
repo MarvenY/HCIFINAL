@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Views.ExplorePage"
+             Title="Explore">
+
+    <ContentPage.BindingContext>
+        <vm:ExploreViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ── Search Bar ──────────────────────────────────────── -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*,Auto"
+              Padding="12,10"
+              ColumnSpacing="8"
+              BackgroundColor="{StaticResource PrimaryGreen}">
+
+            <Frame Grid.Column="0"
+                   Padding="12,0"
+                   CornerRadius="24"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   BorderColor="Transparent">
+                <Entry Text="{Binding SearchQuery}"
+                       Placeholder="Search recipes…"
+                       ReturnCommand="{Binding SearchCommand}"
+                       FontSize="15"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <Button Grid.Column="1"
+                    Text="Search"
+                    Command="{Binding SearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="White"
+                    TextColor="{StaticResource PrimaryGreen}"
+                    CornerRadius="24"
+                    FontAttributes="Bold"
+                    HeightRequest="50" />
+        </Grid>
+
+        <!-- ── Results ─────────────────────────────────────────── -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Results}"
+                        SelectionMode="None"
+                        Margin="0,4,0,0">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Margin="0,80,0,0"
+                                     Spacing="12">
+                    <Label Text="🍜" FontSize="56" HorizontalOptions="Center" />
+                    <Label Text="{Binding HasSearched, Converter={x:StaticResource BoolToStringConverter},
+                                         ConverterParameter='No results found|Search for recipes above'}"
+                           FontSize="15"
+                           TextColor="Gray"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Margin="24,0" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Post">
+                    <Frame Margin="12,6"
+                           CornerRadius="12"
+                           BackgroundColor="{AppThemeBinding Light=#F9F9F9, Dark=#2A2A2A}"
+                           Padding="0"
+                           HasShadow="True">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ExploreViewModel}}, Path=OpenPostCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+                        <Grid ColumnDefinitions="120,*" HeightRequest="100">
+                            <!-- Thumbnail -->
+                            <Image Grid.Column="0"
+                                   Source="{Binding ImageUrl}"
+                                   Aspect="AspectFill"
+                                   IsClippedToBounds="True" />
+                            <!-- Info -->
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Padding="10,8"
+                                                 Spacing="4"
+                                                 VerticalOptions="Center">
+                                <Label Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="15"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="2" />
+                                <Label Text="{Binding AuthorName}"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label Text="{Binding Calories, StringFormat='🔥 {0} cal'}"
+                                           FontSize="11"
+                                           TextColor="#FF9800" />
+                                    <Label Text="{Binding CookingTime, StringFormat='⏱️ {0}'}"
+                                           FontSize="11"
+                                           TextColor="#00BCD4" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- ── Busy indicator ─────────────────────────────────── -->
+        <ActivityIndicator Grid.Row="1"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource PrimaryGreen}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+    </Grid>
+
+</ContentPage>

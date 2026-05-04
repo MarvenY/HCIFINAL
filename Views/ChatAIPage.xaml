@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             x:Class="Le2me.Views.ChatAIPage"
+             Title="AI Chat">
+
+    <ContentPage.BindingContext>
+        <vm:ChatAIViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="🗑️"
+                     Command="{Binding ClearChatCommand}"
+                     Order="Primary" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*,Auto" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
+
+        <!-- ── Chat messages list ──────────────────────────────── -->
+        <CollectionView x:Name="MessageList"
+                        Grid.Row="0"
+                        ItemsSource="{Binding Messages}"
+                        SelectionMode="None"
+                        Margin="8,8,8,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:ChatMessage">
+                    <Grid Padding="4,4">
+                        <!-- Chat bubble -->
+                        <Frame Padding="12,10"
+                               CornerRadius="18"
+                               HasShadow="False"
+                               MaximumWidthRequest="300"
+                               BackgroundColor="{Binding BubbleColor}"
+                               HorizontalOptions="{Binding HorizontalOptions}">
+                            <Label Text="{Binding Text}"
+                                   TextColor="{Binding TextColor}"
+                                   FontSize="15"
+                                   LineBreakMode="WordWrap" />
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- ── Busy indicator ─────────────────────────────────── -->
+        <ActivityIndicator Grid.Row="0"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource PrimaryGreen}"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,8" />
+
+        <!-- ── Input bar ──────────────────────────────────────── -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              Padding="12,8"
+              BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+              ColumnSpacing="8">
+
+            <Frame Grid.Column="0"
+                   Padding="12,0"
+                   CornerRadius="24"
+                   BorderColor="#E0E0E0"
+                   HasShadow="False">
+                <Entry Text="{Binding InputText}"
+                       Placeholder="Ask me anything about cooking…"
+                       ReturnCommand="{Binding SendCommand}"
+                       FontSize="15" />
+            </Frame>
+
+            <Button Grid.Column="1"
+                    Command="{Binding SendCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="{StaticResource PrimaryGreen}"
+                    TextColor="White"
+                    Text="➤"
+                    FontSize="18"
+                    CornerRadius="24"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="0" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

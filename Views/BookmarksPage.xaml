@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             xmlns:models="clr-namespace:Le2me.Models"
+             x:Class="Le2me.Views.BookmarksPage"
+             Title="My Bookmarks">
+
+    <ContentPage.BindingContext>
+        <vm:BookmarksViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="*">
+
+        <CollectionView ItemsSource="{Binding Bookmarks}"
+                        SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="12"
+                                     Margin="0,100,0,0">
+                    <Label Text="🔖" FontSize="60" HorizontalOptions="Center" />
+                    <Label Text="No saved recipes yet."
+                           TextColor="Gray" FontSize="16"
+                           HorizontalOptions="Center" />
+                    <Label Text="Tap the bookmark icon on any post to save it here."
+                           TextColor="Gray" FontSize="14"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Margin="32,0" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Post">
+                    <SwipeView>
+                        <!-- Swipe left to un-bookmark -->
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Remove"
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookmarksViewModel}}, Path=RemoveBookmarkCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Margin="12,6"
+                               CornerRadius="12"
+                               Padding="0"
+                               HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2A2A2A}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookmarksViewModel}}, Path=OpenPostCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="110,*" HeightRequest="90">
+                                <!-- Thumbnail -->
+                                <Image Grid.Column="0"
+                                       Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"
+                                       IsClippedToBounds="True" />
+                                <!-- Info -->
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="12,10"
+                                                     Spacing="4"
+                                                     VerticalOptions="Center">
+                                    <Label Text="{Binding Title}"
+                                           FontAttributes="Bold"
+                                           FontSize="15"
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="2" />
+                                    <Label Text="{Binding AuthorName}"
+                                           FontSize="12"
+                                           TextColor="Gray" />
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label Text="{Binding Calories, StringFormat='🔥 {0} cal'}"
+                                               FontSize="11" TextColor="#FF9800" />
+                                        <Label Text="{Binding CookingTime, StringFormat='⏱️ {0}'}"
+                                               FontSize="11" TextColor="#00BCD4" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- Busy indicator -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource PrimaryGreen}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+    </Grid>
+
+</ContentPage>

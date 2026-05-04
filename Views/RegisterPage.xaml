@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Le2me.ViewModels"
+             x:Class="Le2me.Views.RegisterPage"
+             Title="Create Account">
+
+    <ContentPage.BindingContext>
+        <vm:RegisterViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,32" Spacing="16">
+
+            <!-- Header -->
+            <Label Text="Create Account"
+                   FontSize="30"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryGreen}"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,8" />
+
+            <Label Text="Join the Le2me community 🍳"
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,24" />
+
+            <!-- Username -->
+            <Frame Padding="12,0" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Text="👤" VerticalOptions="Center" Margin="0,0,8,0" />
+                    <Entry Grid.Column="1"
+                           Text="{Binding Username}"
+                           Placeholder="Choose a username"
+                           Style="{StaticResource FormEntry}" />
+                </Grid>
+            </Frame>
+
+            <!-- Email -->
+            <Frame Padding="12,0" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Text="✉️" VerticalOptions="Center" Margin="0,0,8,0" />
+                    <Entry Grid.Column="1"
+                           Text="{Binding Email}"
+                           Placeholder="Email address"
+                           Keyboard="Email"
+                           Style="{StaticResource FormEntry}" />
+                </Grid>
+            </Frame>
+
+            <!-- Password -->
+            <Frame Padding="12,0" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Text="🔒" VerticalOptions="Center" Margin="0,0,8,0" />
+                    <Entry Grid.Column="1"
+                           Text="{Binding Password}"
+                           Placeholder="Password"
+                           IsPassword="True"
+                           Style="{StaticResource FormEntry}" />
+                </Grid>
+            </Frame>
+
+            <!-- Confirm Password -->
+            <Frame Padding="12,0" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Text="🔒" VerticalOptions="Center" Margin="0,0,8,0" />
+                    <Entry Grid.Column="1"
+                           Text="{Binding ConfirmPassword}"
+                           Placeholder="Confirm password"
+                           IsPassword="True"
+                           Style="{StaticResource FormEntry}" />
+                </Grid>
+            </Frame>
+
+            <!-- Error -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   FontSize="13"
+                   IsVisible="{Binding ErrorMessage, Converter={x:StaticResource StringToBoolConverter}}"
+                   HorizontalOptions="Center" />
+
+            <!-- Register button -->
+            <Button Text="Create Account"
+                    Command="{Binding RegisterCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0,8,0,0" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="{StaticResource PrimaryGreen}"
+                               HorizontalOptions="Center" />
+
+            <!-- Back to Login -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="Already have an account?" VerticalOptions="Center" TextColor="Gray" />
+                <Button Text="Sign In"
+                        Command="{Binding GoBackCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource PrimaryGreen}"
+                        FontAttributes="Bold"
+                        Padding="0" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
